@@ -1,4 +1,4 @@
 linter:
   checkstyle:
+    config: check_style.xml
     dir: src
-    properties: check_style.xml
