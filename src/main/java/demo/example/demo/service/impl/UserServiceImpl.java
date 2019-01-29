@@ -33,4 +33,18 @@ public class UserServiceImpl implements UserService {
 
         return userList;
     }
+
+    /**
+     * ユーザの存在チェック.
+     *
+     * @param userId ユーザID
+     * @return true: 存在する false: 存在しない
+     */
+    @Override
+    public boolean isUser(final String userId) {
+
+        // TODO ユーザ情報取得
+
+        return true;
+    }
 }

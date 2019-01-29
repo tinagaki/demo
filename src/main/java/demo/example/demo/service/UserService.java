@@ -16,4 +16,12 @@ public interface UserService {
      * @return ユーザ情報一覧
      */
     List<User> getUserList(String userId);
+
+    /**
+     * ユーザの存在チェック.
+     *
+     * @param userId ユーザID
+     * @return true: 存在する false: 存在しない
+     */
+    boolean isUser(final String userId);
 }
