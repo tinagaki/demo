@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,11 @@ public class DemoController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public List<User> getUsers() {
+
+        // ユーザ情報が存在しない場合、空のユーザ情報を返す
+        if (!userService.isUser("test.user")) {
+            return new ArrayList<>();
+        }
 
         return userService.getUserList("test.user");
     }
