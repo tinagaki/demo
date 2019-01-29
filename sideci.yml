@@ -1,0 +1,4 @@
+linter:
+  checkstyle:
+    dir: src
+    properties: check_style.xml
