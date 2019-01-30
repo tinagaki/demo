@@ -2,3 +2,12 @@ linter:
   checkstyle:
     config: check_style.xml
     dir: src
+  pmd_java:
+    dir: src
+    rulesets:
+      - category/java/bestpractices.xml
+      - category/java/errorprone.xml
+      - category/java/multithreading.xml
+      - category/java/performance.xml
+    encoding: Shift_JIS
+    min_priority: 3
