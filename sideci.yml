@@ -5,9 +5,6 @@ linter:
   pmd_java:
     dir: src
     rulesets:
-      - category/java/bestpractices.xml
-      - category/java/errorprone.xml
-      - category/java/multithreading.xml
-      - category/java/performance.xml
+      - pmd_ruleset.xml
     encoding: Shift_JIS
     min_priority: 3
