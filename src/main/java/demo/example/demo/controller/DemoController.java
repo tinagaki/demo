@@ -33,14 +33,6 @@ public class DemoController {
             return new ArrayList<>();
         }
 
-        if (!userService.isUser("test.user")) {
-            return new ArrayList<>();
-        }
-
-        if (!userService.isUser("test.user")) {
-            return new ArrayList<>();
-        }
-
         return userService.getUserList("test.user");
     }
 }
