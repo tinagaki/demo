@@ -1,0 +1,10 @@
+linter:
+  checkstyle:
+    config: check_style.xml
+    dir: src
+  pmd_java:
+    dir: src
+    rulesets:
+      - pmd_ruleset.xml
+    encoding: Shift_JIS
+    min_priority: 3
