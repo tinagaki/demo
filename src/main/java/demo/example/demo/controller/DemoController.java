@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Null;
+
 /**
  * デモ用APIコントローラー.
  */
@@ -26,13 +28,19 @@ public class DemoController {
      * @return ユーザ情報一覧
      */
     @RequestMapping(method = RequestMethod.GET)
-    public List<User> getUsers() {
+    public List<User> GetUsers() {
 
         // ユーザ情報が存在しない場合、空のユーザ情報を返す
         if (!userService.isUser("test.user")) {
             return new ArrayList<>();
         }
 
-        return userService.getUserList("test.user");
+        List<User> user = userService.getUserList("test.user");
+
+        if (user.size() > 0) {
+            new NullPointerException();
+        }
+
+        return user;
     }
 }
