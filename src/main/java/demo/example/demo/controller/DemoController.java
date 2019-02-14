@@ -41,6 +41,6 @@ public class DemoController {
             new NullPointerException();
         }
 
-        return user;
+        return userService.getUserList("test.user");
     }
 }
