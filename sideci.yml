@@ -5,6 +5,6 @@ linter:
   pmd_java:
     dir: src
     rulesets:
-      - kbi_pmd.xml
+      - kbi_pmd_all.xml
     encoding: Shift_JIS
     min_priority: 3
