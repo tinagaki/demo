@@ -22,6 +22,8 @@ public class DemoController {
     @Autowired
     private UserServiceImpl userService;
 
+    public String test;
+
     /**
      * ユーザ情報一覧取得.
      *
