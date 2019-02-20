@@ -1,10 +1,10 @@
 linter:
   checkstyle:
-    config: check_style.xml
+    config: kbi_checks_all.xml
     dir: src
   pmd_java:
     dir: src
     rulesets:
-      - pmd_ruleset.xml
+      - kbi_pmd_all.xml
     encoding: Shift_JIS
     min_priority: 3
