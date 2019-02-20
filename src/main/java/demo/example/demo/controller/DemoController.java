@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Null;
+//import javax.validation.constraints.Null;
 
 /**
  * デモ用APIコントローラー.
@@ -22,7 +22,7 @@ public class DemoController {
     @Autowired
     private UserServiceImpl userService;
 
-    public String test;
+//    public String test;
 
     //private String test1, Test2;
 
@@ -39,7 +39,7 @@ public class DemoController {
             return new ArrayList<>();
         }
 
-        List<User> user = userService.getUserList("test.user");
+        final List<User> user = userService.getUserList("test.user");
 
         if (user.size() > 0) {
             new NullPointerException();
