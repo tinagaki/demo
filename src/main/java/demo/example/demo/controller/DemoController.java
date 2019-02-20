@@ -24,6 +24,8 @@ public class DemoController {
 
     public String test;
 
+    private String test1, Test2;
+
     /**
      * ユーザ情報一覧取得.
      *
