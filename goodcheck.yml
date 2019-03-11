@@ -1,7 +1,7 @@
 rules:
   - id: com.example.1
-    pattern: id
-    message:
+    pattern: DemoController
+    message: TESTTESTTEST
     glob:
       - "**/*.rb"
       - "**/*.{yaml,yml}"
