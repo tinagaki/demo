@@ -1,0 +1,579 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+          "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+          "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<!--
+    Checkstyle configuration that checks the Google coding conventions from Google Java Style
+    that can be found at https://google.github.io/styleguide/javaguide.html.
+    Checkstyle is very configurable. Be sure to read the documentation at
+    http://checkstyle.sf.net (or in your downloaded distribution).
+    To completely disable a check, just comment it out or delete it from the file.
+    Authors: Max Vetrenko, Ruslan Diachenko, Roman Ivanov.
+ -->
+
+<!--
+  Checkstyle configuration that checks the sun coding conventions from:
+    - the Java Language Specification at
+      http://java.sun.com/docs/books/jls/second_edition/html/index.html
+    - the Sun Code Conventions at http://java.sun.com/docs/codeconv/
+    - the Javadoc guidelines at
+      http://java.sun.com/j2se/javadoc/writingdoccomments/index.html
+    - the JDK Api documentation http://java.sun.com/j2se/docs/api/index.html
+    - some best practices
+  Checkstyle is very configurable. Be sure to read the documentation at
+  http://checkstyle.sf.net (or in your downloaded distribution).
+  Most Checks are configurable, be sure to consult the documentation.
+  To completely disable a check, just comment it out or delete it from the file.
+  Finally, it is worth reading the documentation.
+-->
+
+<!-- 親モジュール -->
+<module name = "Checker">
+    <property name="charset" value="UTF-8"/>
+
+    <property name="severity" value="warning"/>
+
+    <property name="fileExtensions" value="java, properties, xml"/>
+    <!-- Checks for whitespace                               -->
+    <!-- See http://checkstyle.sf.net/config_whitespace.html -->
+    <!-- タブが含まれていないか Disabled -->
+    <!-- http://checkstyle.sourceforge.net/config_whitespace.html#FileTabCharacter -->
+    <!--<module name="FileTabCharacter">-->
+        <!--<property name="eachLine" value="false"/>-->
+    <!--</module>-->
+
+    <!-- packageコメントファイルがあるか Disabled -->
+    <!-- http://checkstyle.sf.net/config_javadoc.html#JavadocPackage -->
+    <!-- <module name="JavadocPackage"/> -->
+
+    <!-- ファイルの最後が改行コードであるか -->
+    <!-- http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile -->
+    <module name="NewlineAtEndOfFile"/>
+
+    <!-- localが違うpropertyファイル同士でkeyに一貫性があるか -->
+    <!-- http://checkstyle.sourceforge.net/config_misc.html#Translation -->
+    <module name="Translation"/>
+
+    <!-- ソースファイルの行数をチェックする -->
+    <!-- http://checkstyle.sourceforge.net/config_sizes.html#FileLength -->
+    <module name="FileLength">
+        <property name="max" value="2000"/>
+    </module>
+
+    <!-- 指定した正規表現に該当する行があるか Disabled -->
+    <!-- http://checkstyle.sourceforge.net/config_misc.html#RegexpSingleline -->
+    <!--<module name="RegexpSingleline">-->
+        <!--<property name="format" value="\s+$"/>-->
+        <!--<property name="minimum" value="0"/>-->
+        <!--<property name="maximum" value="0"/>-->
+        <!--<property name="message" value="Line has trailing spaces."/>-->
+    <!--</module>-->
+
+    <!-- 個々のJavaソースファイルをチェックするためのルールを定義 -->
+    <!-- ほとんどのモジュールの親は、この TreeWalker になっている -->
+    <!-- TreeWalker 自体は何かをチェックするものではなく、 Java ソースの構文解析が役割になっている -->
+    <!-- TreeWalker の子モジュールは、 TreeWalker が解析して作った構文木を走査していく中で、個々のチェック処理を行うようになっている -->
+    <!-- http://checkstyle.sourceforge.net/config.html#TreeWalker -->
+    <module name="TreeWalker">
+        <!-- ファイル名とClassの型名が一致しているか -->
+        <!-- http://checkstyle.sourceforge.net/config_misc.html#OuterTypeFilename -->
+        <module name="OuterTypeFilename"/>
+        <!-- 禁止した記述が無いか -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#IllegalTokenText -->
+        <module name="IllegalTokenText">
+            <!-- http://checkstyle.sourceforge.net/config_coding.html#IllegalTokenText -->
+            <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>
+            <property name="format"
+             value="\\u00(09|0(a|A)|0(c|C)|0(d|D)|22|27|5(C|c))|\\(0(10|11|12|14|15|42|47)|134)"/>
+            <property name="message"
+             value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>
+        </module>
+        <!-- Unicodeエスケープを使用していないか -->
+        <!-- http://checkstyle.sourceforge.net/config_misc.html#AvoidEscapedUnicodeCharacters -->
+        <module name="AvoidEscapedUnicodeCharacters">
+            <property name="allowEscapesForControlCharacters" value="true"/>
+            <property name="allowByTailComment" value="true"/>
+            <property name="allowNonPrintableEscapes" value="true"/>
+        </module>
+        <!-- １行の文字数が上限を超えていないか -->
+        <!-- http://checkstyle.sourceforge.net/config_sizes.html#LineLength -->
+        <module name="LineLength">
+            <property name="max" value="100"/>
+            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+        </module>
+        <!-- Import文にアスタリスク(*)が含まれていないか -->
+        <!-- ClassやstaticImportなどは無視する設定も可能 -->
+        <!-- http://checkstyle.sourceforge.net/config_imports.html#AvoidStarImport -->
+        <module name="AvoidStarImport"/>
+        <!-- トップレベルクラスが自身のソースファイル以外で定義されていないか -->
+        <!-- http://checkstyle.sourceforge.net/config_design.html#OneTopLevelClass -->
+        <module name="OneTopLevelClass"/>
+        <!-- 改行されていないか -->
+        <!-- デフォルトではPackege宣言とImport宣言、static Import 宣言 -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#NoLineWrap -->
+        <module name="NoLineWrap"/>
+        <!-- 空ブロックが無いか -->
+        <!-- デフォルトではIF-ELS,FOR,WHILE,TRY-CATCH-FINALLY,SWITCH,イニシャライザなどのブロック -->
+        <!-- http://checkstyle.sourceforge.net/config_blocks.html#EmptyBlock -->
+        <module name="EmptyBlock">
+            <property name="option" value="TEXT"/>
+            <property name="tokens"
+             value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH"/>
+        </module>
+        <!-- コードが{}で囲まれているか -->
+        <!-- デフォルトではIF,ELSE,FOR,DO,WHILE、1行で記述したら無視する設定もできる -->
+        <!-- http://checkstyle.sourceforge.net/config_blocks.html#NeedBraces -->
+        <module name="NeedBraces"/>
+        <!-- {の記述ルール -->
+        <!-- eol(行末)*デフォルト,nl(行頭),nlow(条件文が複数行なら行頭) -->
+        <!-- http://checkstyle.sourceforge.net/config_blocks.html#LeftCurly -->
+        <module name="LeftCurly"/>
+        <!-- }の記述ルール。主にIF-ELEやTRY-CATCH-FINALLYのように条件文が分岐する場合の書き方 -->
+        <!-- same(}の後に次の条件を書く)*デフォルト,alone(}の後の記述は認めず、改行する),alone_or_singleline(基本はaloneで１行文のみ{と同じ行を認める) -->
+        <!-- http://checkstyle.sourceforge.net/config_blocks.html#RightCurly -->
+        <module name="RightCurly">
+            <property name="id" value="RightCurlySame"/>
+            <property name="tokens"
+             value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE,
+                    LITERAL_DO"/>
+        </module>
+        <module name="RightCurly">
+            <property name="id" value="RightCurlyAlone"/>
+            <property name="option" value="alone"/>
+            <property name="tokens"
+             value="CLASS_DEF, METHOD_DEF, CTOR_DEF, LITERAL_FOR, LITERAL_WHILE, STATIC_INIT,
+                    INSTANCE_INIT"/>
+        </module>
+        <!-- Tokenの’前後’に空白スペースが無いか -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#WhitespaceAround -->
+        <module name="WhitespaceAround">
+            <property name="allowEmptyConstructors" value="true"/>
+            <property name="allowEmptyMethods" value="true"/>
+            <property name="allowEmptyTypes" value="true"/>
+            <property name="allowEmptyLoops" value="true"/>
+            <message key="ws.notFollowed"
+             value="WhitespaceAround: ''{0}'' is not followed by whitespace. Empty blocks may only be represented as '{}' when not part of a multi-block statement (4.1.3)"/>
+            <message key="ws.notPreceded"
+             value="WhitespaceAround: ''{0}'' is not preceded with whitespace."/>
+        </module>
+        <!-- 1行に1つのstatmentが記述されているか -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#OneStatementPerLine -->
+        <module name="OneStatementPerLine"/>
+        <!-- 変数の宣言が１行にまとめられているか -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#MultipleVariableDeclarations -->
+        <module name="MultipleVariableDeclarations"/>
+        <!-- 配列の宣言の記述をチェックする -->
+        <!-- true=Java Style:Classに配列を定義する(String[] args)／false=C Style:変数に配列を定義する(String args[]) -->
+        <!-- http://checkstyle.sourceforge.net/config_misc.html#ArrayTypeStyle -->
+        <module name="ArrayTypeStyle"/>
+        <!-- Switch文にdefaultが記述されているか -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#MissingSwitchDefault -->
+        <module name="MissingSwitchDefault"/>
+        <!-- switch文の各条件内の処理にbreak,return,throw,continueなどが記述されているか -->
+        <!-- 意図的にThroughさせたい場合は条件式にコメントでfallthruとつける。 -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#FallThrough -->
+        <module name="FallThrough"/>
+        <!-- long型の定数宣言が大文字のLとなっているか -->
+        <!-- http://checkstyle.sourceforge.net/config_misc.html#UpperEll -->
+        <module name="UpperEll"/>
+        <!-- 修飾子の順番がJavaの推奨に従っているか -->
+        <!-- http://checkstyle.sourceforge.net/config_modifier.html#ModifierOrder -->
+        <module name="ModifierOrder"/>
+        <!-- tokenの間に空行を入れているか -->
+        <!-- Google Styleは、フィールド間の空行はなくても良いOptionを指定している。 -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#EmptyLineSeparator -->
+        <module name="EmptyLineSeparator">
+            <property name="allowNoEmptyLineBetweenFields" value="true"/>
+        </module>
+        <!-- 改行の仕方が規定通りか -->
+        <!-- ドット(.)は改行後の新しい行につける -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#SeparatorWrap -->
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapDot"/>
+            <property name="tokens" value="DOT"/>
+            <property name="option" value="nl"/>
+        </module>
+        <!-- カンマ(,)は改行後の新しい行につける -->
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapComma"/>
+            <property name="tokens" value="COMMA"/>
+            <property name="option" value="EOL"/>
+        </module>
+        <module name="SeparatorWrap">
+            <!-- ELLIPSIS is EOL until https://github.com/google/styleguide/issues/258 -->
+            <property name="id" value="SeparatorWrapEllipsis"/>
+            <property name="tokens" value="ELLIPSIS"/>
+            <property name="option" value="EOL"/>
+        </module>
+        <module name="SeparatorWrap">
+            <!-- ARRAY_DECLARATOR is EOL until https://github.com/google/styleguide/issues/259 -->
+            <property name="id" value="SeparatorWrapArrayDeclarator"/>
+            <property name="tokens" value="ARRAY_DECLARATOR"/>
+            <property name="option" value="EOL"/>
+        </module>
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapMethodRef"/>
+            <property name="tokens" value="METHOD_REF"/>
+            <property name="option" value="nl"/>
+        </module>
+        <!-- packageの命名規則 -->
+        <!-- 規則は正規表現で設定する -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#PackageName -->
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+            <message key="name.invalidPattern"
+             value="Package name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!-- Class,Interface,enum,annotationの命名規則 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#TypeName -->
+        <module name="TypeName">
+            <message key="name.invalidPattern"
+             value="Type name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!-- メンバ変数の命名規則 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#MemberName -->
+        <module name="MemberName">
+            <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9]*$"/>
+            <message key="name.invalidPattern"
+             value="Member name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!-- メソッドのパラメータの命名規則 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#ParameterName -->
+        <module name="ParameterName">
+            <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
+            <message key="name.invalidPattern"
+             value="Parameter name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!-- ラムダパラメーターの命名規則 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#LambdaParameterName -->
+        <module name="LambdaParameterName">
+            <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
+            <message key="name.invalidPattern"
+                     value="Lambda parameter name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!-- chatchパラメータの命名規則 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#CatchParameterName -->
+        <module name="CatchParameterName">
+            <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
+            <message key="name.invalidPattern"
+             value="Catch parameter name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!-- ローカル変数の命名規則 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#LocalVariableName -->
+        <module name="LocalVariableName">
+            <property name="tokens" value="VARIABLE_DEF"/>
+            <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
+            <message key="name.invalidPattern"
+             value="Local variable name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!-- クラスの型パラメータの命名規則(総称型の仮型引数など) -->
+        <!-- デフォルトは大文字一文字 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#ClassTypeParameterName -->
+        <module name="ClassTypeParameterName">
+            <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
+            <message key="name.invalidPattern"
+             value="Class type name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!-- メソッドの型パラメータの命名規則 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#MethodTypeParameterName -->
+        <module name="MethodTypeParameterName">
+            <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
+            <message key="name.invalidPattern"
+             value="Method type name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!-- インターフェースの型パラメータの命名規則 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#InterfaceTypeParameterName -->
+        <module name="InterfaceTypeParameterName">
+            <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
+            <message key="name.invalidPattern"
+             value="Interface type name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!-- ファイナライザーが呼ばれていないこと -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#NoFinalizer -->
+        <module name="NoFinalizer"/>
+        <!-- 総称型の宣言<>にスペースが入っていないか -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#GenericWhitespace -->
+        <module name="GenericWhitespace">
+            <message key="ws.followed"
+             value="GenericWhitespace ''{0}'' is followed by whitespace."/>
+            <message key="ws.preceded"
+             value="GenericWhitespace ''{0}'' is preceded with whitespace."/>
+            <message key="ws.illegalFollow"
+             value="GenericWhitespace ''{0}'' should followed by whitespace."/>
+            <message key="ws.notPreceded"
+             value="GenericWhitespace ''{0}'' is not preceded with whitespace."/>
+        </module>
+        <!-- インデントレベルが正しいか -->
+        <!-- http://checkstyle.sourceforge.net/config_misc.html#Indentation -->
+        <module name="Indentation">
+            <!-- インデントのスペース -->
+            <!-- basicOffsetのデフォルト値は4 -->
+            <property name="basicOffset" value="4"/>
+            <property name="braceAdjustment" value="0"/>
+            <property name="caseIndent" value="2"/>
+            <property name="throwsIndent" value="4"/>
+            <property name="lineWrappingIndentation" value="4"/>
+            <property name="arrayInitIndent" value="2"/>
+        </module>
+        <!-- AbbreviationAsWordInName -->
+        <!-- googleは大文字の連続記述を4文字に規定している -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#AbbreviationAsWordInName -->
+        <module name="AbbreviationAsWordInName">
+            <property name="ignoreFinal" value="false"/>
+            <property name="allowedAbbreviationLength" value="1"/>
+        </module>
+        <!-- オーバーロードメソッドがまとまって宣言されていること -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#OverloadMethodsDeclarationOrder -->
+        <module name="OverloadMethodsDeclarationOrder"/>
+        <!-- 変数を宣言してから使用するまでのSTEP数が規規定通りか -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#VariableDeclarationUsageDistance -->
+        <module name="VariableDeclarationUsageDistance"/>
+        <!-- Import宣言の順番を規定する -->
+        <!-- 順番のルールは公式ページを参照 -->
+        <!-- http://checkstyle.sourceforge.net/config_imports.html#CustomImportOrder -->
+        <module name="CustomImportOrder">
+            <property name="sortImportsInGroupAlphabetically" value="true"/>
+            <property name="separateLineBetweenGroups" value="true"/>
+            <property name="customImportOrderRules" value="STATIC###THIRD_PARTY_PACKAGE"/>
+        </module>
+        <!-- メソッドのパラメータの記述が規定通りか -->
+        <!-- パラメータの改行やスペースの許可など -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#MethodParamPad -->
+        <module name="MethodParamPad"/>
+        <!-- トークンの前に空白がないことを確認します。 -->
+        <!-- 空白が先行していないこと、または（改行が許可されている場合は）前の行のすべての文字が空白であることを確認 -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#NoWhitespaceBefore -->
+        <module name="NoWhitespaceBefore">
+            <property name="tokens"
+             value="COMMA, SEMI, POST_INC, POST_DEC, DOT, ELLIPSIS, METHOD_REF"/>
+            <property name="allowLineBreaks" value="true"/>
+        </module>
+        <!-- 括弧とパラメータの間の記述が規定通りか -->
+        <!-- デフォルトはnospace -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#SeparatorWrap -->
+        <module name="ParenPad"/>
+        <!-- 演算子で改行する際の改行位置のルール -->
+        <!-- デフォルトはnlで、演算子は次行の先頭に記述する -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#OperatorWrap -->
+        <module name="OperatorWrap">
+            <property name="option" value="NL"/>
+            <property name="tokens"
+             value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR,
+                    LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR, METHOD_REF "/>
+        </module>
+        <!-- アノテーションを付ける位置に関する規約 -->
+        <!-- http://checkstyle.sourceforge.net/config_annotation.html#AnnotationLocation -->
+        <module name="AnnotationLocation">
+            <property name="id" value="AnnotationLocationMostCases"/>
+            <property name="tokens"
+             value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF"/>
+        </module>
+        <module name="AnnotationLocation">
+            <property name="id" value="AnnotationLocationVariables"/>
+            <property name="tokens" value="VARIABLE_DEF"/>
+            <property name="allowSamelineMultipleAnnotations" value="true"/>
+        </module>
+        <!-- JavaDocTokenに説明があるか -->
+        <!-- http://checkstyle.sourceforge.net/config_javadoc.html#NonEmptyAtclauseDescription -->
+        <module name="NonEmptyAtclauseDescription"/>
+        <!-- Javadocの説明を改行するときのインデントルール -->
+        <!-- http://checkstyle.sourceforge.net/config_javadoc.html#JavadocTagContinuationIndentation -->
+        <module name="JavadocTagContinuationIndentation"/>
+        <!-- Javadocに非推奨なフレーズが無いか -->
+        <!-- http://checkstyle.sourceforge.net/config_javadoc.html#SummaryJavadoc -->
+        <module name="SummaryJavadoc">
+            <property name="forbiddenSummaryFragments"
+             value="^@return the *|^This method returns |^A [{]@code [a-zA-Z0-9]+[}]( is a )"/>
+        </module>
+        <!-- Javadocの段落定義 -->
+        <!-- デフォルトのルールは公式を参照(Google Styleの設定もデフォルト) -->
+        <!-- http://checkstyle.sourceforge.net/config_javadoc.html#JavadocParagraph -->
+        <module name="JavadocParagraph"/>
+        <!-- Javadocの@の宣言順 -->
+        <!-- Google Styleは@param, @return, @throws, @deprecatedの４種類だけ定義 -->
+        <!-- http://checkstyle.sourceforge.net/config_javadoc.html#AtclauseOrder -->
+        <module name="AtclauseOrder">
+            <property name="tagOrder" value="@param, @return, @throws, @deprecated"/>
+            <property name="target"
+             value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF"/>
+        </module>
+        <!-- メソッドのJavadoc定義 -->
+        <!-- Google Styleは定義を色々変えているので注意 -->
+        <!-- http://checkstyle.sourceforge.net/config_javadoc.html#JavadocMethod -->
+        <module name="JavadocMethod">
+            <property name="scope" value="public"/>
+            <property name="allowMissingParamTags" value="true"/>
+            <property name="allowMissingThrowsTags" value="true"/>
+            <property name="allowMissingReturnTag" value="true"/>
+            <property name="minLineCount" value="2"/>
+            <property name="allowedAnnotations" value="Override, Test"/>
+            <property name="allowThrowsTagsForSubclasses" value="true"/>
+        </module>
+        <!-- メソッドの命名規則 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#MethodName -->
+        <module name="MethodName">
+            <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>
+            <message key="name.invalidPattern"
+             value="Method name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!-- Javadocが１行で収まる場合に@が含まれていないこと -->
+        <!-- http://checkstyle.sourceforge.net/config_javadoc.html#SingleLineJavadoc -->
+        <module name="SingleLineJavadoc">
+            <property name="ignoreInlineTags" value="false"/>
+        </module>
+        <!-- 空のcatchブロックが無いこと -->
+        <!-- 指定したコメント文であれば無視することも可能 -->
+        <!-- http://checkstyle.sourceforge.net/config_blocks.html#EmptyCatchBlock -->
+        <module name="EmptyCatchBlock">
+            <property name="exceptionVariableName" value="expected"/>
+        </module>
+        <!-- コメント行のインデントをコードのインデントと揃えるか -->
+        <!-- http://checkstyle.sourceforge.net/config_misc.html#CommentsIndentation -->
+        <module name="CommentsIndentation"/>
+        <!-- ClassとInterfaceのJavadocが定義されているか -->
+        <!-- http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType -->
+        <!-- デフォルトでは@authorと@versionはチェックしない -->
+        <module name="JavadocType"/>
+
+        <!-- 変数にJavadocが定義されているか Disabled -->
+        <!-- http://checkstyle.sourceforge.net/config_javadoc.html#JavadocVariable -->
+        <!--<module name="JavadocVariable"/>-->
+
+        <!-- Javadocのフォーマットをチェックする Disabled -->
+        <!-- http://checkstyle.sourceforge.net/config_javadoc.html#JavadocStyle -->
+        <!--<module name="JavadocStyle"/>-->
+
+        <!-- 定数のフォーマットをチェックする -->
+        <!-- デフォルトは、大文字英数字とアンダーバー -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#ConstantName -->
+        <module name="ConstantName"/>
+        <!-- ローカルのfinal変数のフォーマットをチェックする -->
+        <!-- デフォルトは、小文字の英字で始まり、英数字を許可 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#LocalFinalVariableName -->
+        <module name="LocalFinalVariableName"/>
+        <!-- static変数のフォーマットをチェックする -->
+        <!-- finalが付く変数は対象外 -->
+        <!-- http://checkstyle.sourceforge.net/config_naming.html#StaticVariableName -->
+        <module name="StaticVariableName"/>
+
+        <!-- 不正なパッケージのImportをチェックする Disabled-->
+        <!-- デフォルトは、sunで始まるパッケージ -->
+        <!-- http://checkstyle.sourceforge.net/config_imports.html#IllegalImport -->
+        <!-- <module name="IllegalImport"/> -->
+
+        <!-- 冗長なImport宣言があるか -->
+        <!-- http://checkstyle.sf.net/config_imports.html#RedundantImport -->
+        <module name="RedundantImport"/>
+        <!-- 未使用のImportパッケージがあるか -->
+        <!-- http://checkstyle.sourceforge.net/config_imports.html#UnusedImports -->
+        <module name="UnusedImports">
+            <property name="processJavadoc" value="false"/>
+        </module>
+        <!-- 1メソッドあたりの行数をチェックする -->
+        <!-- デフォルトは、max150行。空行やコメント行も含める。 -->
+        <!-- http://checkstyle.sourceforge.net/config_sizes.html#MethodLength -->
+        <module name="MethodLength" >
+            <property name="tokens" value="METHOD_DEF"/>
+            <property name="max" value="300"/>
+        </module>
+        <!-- メソッドやコンストラクタのパラメータ(引数)の数をチェックする -->
+        <!-- デフォルトはmax7個 -->
+        <!-- http://checkstyle.sourceforge.net/config_sizes.html#ParameterNumber -->
+        <module name="ParameterNumber">
+            <property name="max" value="10"/>
+            <property name="tokens" value="METHOD_DEF"/>
+        </module>
+
+        <!-- iteratorの空のパディングをチェックする Disabled -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#EmptyForIteratorPad -->
+        <!-- <module name="EmptyForIteratorPad"/> -->
+
+        <!-- tokenの後に空白スペースがないか -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#NoWhitespaceAfter -->
+        <module name="NoWhitespaceAfter"/>
+        <!-- castの括弧に対する空白チェック -->
+        <!-- defaultは、開始の括弧の後と終了の括弧の前にspaceを許可しない -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#TypecastParenPad -->
+        <module name="TypecastParenPad"/>
+        <!-- tokenの後の空白スペースが無いかチェックする -->
+        <!-- http://checkstyle.sourceforge.net/config_whitespace.html#WhitespaceAfter -->
+        <module name="WhitespaceAfter"/>
+        <!-- 冗長な修飾子が無いか -->
+        <!-- http://checkstyle.sourceforge.net/config_modifier.html#RedundantModifier -->
+        <module name="RedundantModifier"/>
+
+        <!-- ネストされたブロックが無いか Disabled -->
+        <!-- http://checkstyle.sourceforge.net/config_blocks.html#AvoidNestedBlocks -->
+        <!--<module name="AvoidNestedBlocks"/>-->
+
+        <!-- インラインでの記述が無いか -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#AvoidInlineConditionals -->
+        <module name="AvoidInlineConditionals"/>
+        <!-- 空のステートメントを検出する -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#EmptyStatement -->
+        <module name="EmptyStatement"/>
+
+        <!-- equalsメソッドとhashCodeメソッドの両方をオーバーライドしているか Disabled -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#EqualsHashCode -->
+        <!--<module name="EqualsHashCode"/>-->
+
+        <!-- ローカル変数やメソッドのパラメータがフィールド変数と名称が同じとなっていないか(シャドウ化のチェック) -->
+        <!-- setterメソッドは無視することもできるがデフォルトではチェックしている -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#HiddenField -->
+        <module name="HiddenField"/>
+
+        <!-- Factoryメソッドを使わずにインスタンス化していないか Disabled-->
+        <!-- デフォルトでは対象Classなし -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#IllegalInstantiation -->
+        <!--<module name="IllegalInstantiation"/>-->
+
+        <!-- 変数の代入の際に、そのステートメントのサブ式で別の変数を宣言していないか -->
+        <!-- ex.String s = Integer.toString(i = 2) -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#InnerAssignment -->
+        <module name="InnerAssignment"/>
+
+        <!-- マジックナンバーを使用していないか Disabled -->
+        <!-- デフォルトでは、-1,0,1,2は許可している -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#MagicNumber -->
+        <!--<module name="MagicNumber"/>-->
+
+        <!-- 過度に複雑なブーリアン式を記述していないか -->
+        <!-- とりあえずこのチェックに該当したら更にシンプルにできないかを考える -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#SimplifyBooleanExpression -->
+        <module name="SimplifyBooleanExpression"/>
+        <!-- 過度に複雑なブーリアンをreturnしていないか -->
+        <!-- http://checkstyle.sourceforge.net/config_coding.html#SimplifyBooleanReturn -->
+        <module name="SimplifyBooleanReturn"/>
+        <!-- 継承しやすいClass設計になっているか Disabled -->
+        <!-- Javadocに拡張方法が書かれているかを見ている -->
+        <!-- http://checkstyle.sourceforge.net/config_design.html#DesignForExtension -->
+        <!--<module name="DesignForExtension"/>-->
+
+        <!-- privateなコンストラクタしか持たないClassにfinalがつけられているか Disabled -->
+        <!-- http://checkstyle.sourceforge.net/config_design.html#FinalClass -->
+        <!--<module name="FinalClass"/>-->
+
+        <!-- staticなメソッドやフィードしか持たないClassにpublicなコンストラクタを宣言していないか Disabled -->
+        <!-- このようなクラスをユーティリティークラスとみなしている模様-->
+        <!-- http://checkstyle.sourceforge.net/config_design.html#HideUtilityClassConstructor -->
+        <!--<module name="HideUtilityClassConstructor"/>-->
+
+        <!-- インターフェースにメソッド宣言があるか Disabled -->
+        <!-- http://checkstyle.sourceforge.net/config_design.html#InterfaceIsType -->
+        <!--<module name="InterfaceIsType"/>-->
+
+        <!-- classのメンバーはprivateで定義され、アクセッサがあるか Disabled -->
+        <!-- http://checkstyle.sourceforge.net/config_design.html#VisibilityModifier -->
+        <!--<module name="VisibilityModifier"/>-->
+
+
+        <!-- メソッドやコンストラクタのパラメータにfinal修飾子をつけているか Disabled -->
+        <!-- http://checkstyle.sourceforge.net/config_misc.html#FinalParameters -->
+        <module name="FinalParameters"/>
+
+        <!-- TODOコメントが残っているか Disabled -->
+        <!-- http://checkstyle.sourceforge.net/config_misc.html#TodoComment -->
+        <!--<module name="TodoComment"/>-->
+    </module>
+</module>

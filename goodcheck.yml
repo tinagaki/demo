@@ -1,12 +1,10 @@
 rules:
-  - id: com.example.1
+  - id: example.base.1
     pattern: DemoController
     message: TESTTESTTEST
     glob:
-      - "**/*.rb"
-      - "**/*.{yaml,yml}"
-      - "public/**/*.html"
+      - "**/*.java"
     fail:
-      - Signup via Github
+      - class DemoController
     pass:
       - Signup via GitHub
