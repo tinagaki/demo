@@ -3,7 +3,7 @@ rules:
     pattern: DemoController
     message: TESTTESTTEST
     glob:
-      - "**/*.rb"
+      - "**/*.java"
       - "**/*.{yaml,yml}"
       - "public/**/*.html"
     fail:
