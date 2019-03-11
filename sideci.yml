@@ -8,3 +8,7 @@ linter:
       - kbi_pmd_all.xml
     encoding: Shift_JIS
     min_priority: 3
+  goodcheck:
+    config: goodcheck.yml
+    target:
+      - src
