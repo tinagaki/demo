@@ -1,0 +1,12 @@
+rules:
+  - id: com.example.1
+    pattern: DemoController
+    message: TESTTESTTEST
+    glob:
+      - "**/*.rb"
+      - "**/*.{yaml,yml}"
+      - "public/**/*.html"
+    fail:
+      - Signup via Github
+    pass:
+      - Signup via GitHub
